@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC -g -shared -Wl,-soname,libxwindow.so -o ../lib/Debug/libxwindow.so CMakeFiles/xwindow.dir/src/Xwindow.cpp.o   -L/home/dve/work/code/pc/opengl/build/lib/Debug  -L/home/dve/work/code/pc/opengl/thirdsdk/opencv-4.3.0/lib 

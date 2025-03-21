@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC -g -shared -Wl,-soname,libshader.so -o ../lib/Debug/libshader.so CMakeFiles/shader.dir/src/Shader.cpp.o   -L/home/dve/work/code/pc/opengl/build/lib/Debug  -L/home/dve/work/code/pc/opengl/thirdsdk/opencv-4.3.0/lib 

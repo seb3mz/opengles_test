@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC -g -shared -Wl,-soname,libeglsurface.so -o ../lib/Debug/libeglsurface.so CMakeFiles/eglsurface.dir/src/EglSurface.cpp.o   -L/home/dve/work/code/pc/opengl/build/lib/Debug  -L/home/dve/work/code/pc/opengl/thirdsdk/opencv-4.3.0/lib 

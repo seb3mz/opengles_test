@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC -g -shared -Wl,-soname,libimgtrans.so -o ../lib/Debug/libimgtrans.so CMakeFiles/imgtrans.dir/src/imgtrans.cpp.o   -L/home/dve/work/code/pc/opengl/build/lib/Debug  -L/home/dve/work/code/pc/opengl/thirdsdk/opencv-4.3.0/lib 
