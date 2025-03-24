@@ -51,7 +51,7 @@ add_subdirectory(${PROJROOT}/xwindow)
 
 # 设置编译选项
 set(LOCAL_CXXFLAGS -std=c++11)
-set(CMAKE_EXE_LINKER_FLAGS ) #"-fuse-ld=gold"
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fuse-ld=gold") #"-fuse-ld=gold"
 
 # cmake 添加编译选项
 add_compile_options(${LOCAL_CXXFLAGS})
@@ -66,4 +66,4 @@ add_dependencies(${PROJ_NAME} imgtrans)
 add_dependencies(${PROJ_NAME} xwindow)
 
 # cmake 向可执行文件添加链接库
-target_link_libraries(${PROJ_NAME} libeglsurface.so libviewmanager.so libshader.so libimgtrans.so libxwindow.so -lopencv_core -lopencv_calib3d -lopencv_features2d -lopencv_imgproc -lopencv_videoio -lopencv_highgui libEGL.so libGLESv2.so -lX11)
+target_link_libraries(${PROJ_NAME} -leglsurface -lviewmanager -lxwindow)

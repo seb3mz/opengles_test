@@ -21,3 +21,4 @@ include_directories(${INC_LIST})
 add_compile_options(${LOCAL_CXXFLAGS})
 
 add_library(${PROJ_NAME} ${LIBTYPE} ${SRC_LIST})
+target_link_libraries(${PROJ_NAME} PUBLIC -lEGL -lGLESv2)

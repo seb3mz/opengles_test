@@ -1,6 +1,5 @@
 #ifndef VIEW_MANAGER_H
 #define VIEW_MANAGER_H
-#include "imgtrans.h"
 #include "Shader.h"
 #include "EglSurface.h"
 #include "Xwindow.h"

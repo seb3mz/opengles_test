@@ -8,8 +8,6 @@ project(${PROJ_NAME})
 set(INC_LIST ${PROJROOT}/xwindow/inc)
 # 设置源文件路径
 set(SRC_LIST ${PROJROOT}/xwindow/src/Xwindow.cpp)
-# 设置库文件路径
-set(LIB_LIST "./lib")
 
 # 设置编译选项
 set(LOCAL_CXXFLAGS -fPIC -g)
@@ -21,3 +19,4 @@ include_directories(${INC_LIST})
 add_compile_options(${LOCAL_CXXFLAGS})
 
 add_library(${PROJ_NAME} ${LIBTYPE} ${SRC_LIST})
+target_link_libraries(${PROJ_NAME} PUBLIC -lX11)
