@@ -1,9 +1,5 @@
-attribute mediump vec2 inPosition;
-attribute mediump vec2 inTexCoord;
-varying mediump vec2 exTexCoord;
-
+attribute highp vec3 inVertex;
 void main(void)
 {
-    exTexCoord = inTexCoord;
-    gl_Position = vec4(inPosition, 0.0, 1.0);
+    gl_Position = vec4(inVertex, 1.0);
 }

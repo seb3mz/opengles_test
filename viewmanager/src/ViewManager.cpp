@@ -43,24 +43,25 @@ void ViewManager::PreRender()
     //创建 context
     surface->CreateEglContext();
     surface->StartMakeCurrent();
+
+    cout << "Begin PreRender" << endl;
+    glViewport(0, 0, IMG_WIDTH, IMG_HEIGHT);
+    //加载 shader 
+    //xshader->loadSource(vertexShaderSource, pszFragShader);
+    const char* vertexShaderSource = "/home/dve/work/code/pc/opengles_test/viewmanager/shader/vertex.txt";
+    const char* pszFragShader = "/home/dve/work/code/pc/opengles_test/viewmanager/shader/fragment.txt";
+    xshader->loadSource(vertexShaderSource, pszFragShader);
 }
 
 void ViewManager::Render()
 {
-    cout << "Begin Render" << endl;
-    glViewport(0, 0, IMG_WIDTH, IMG_HEIGHT);
-
-    //DrawTriangle();
-    DrawTexture();
+    DrawTriangle();
+    //DrawTexture();
 }
 
 void ViewManager::DrawTriangle()
 {
-    //加载 shader 
-    //xshader->loadSource(vertexShaderSource, pszFragShader);
-    const char* vertexShaderSource = "/home/dve/work/code/pc/opengl/viewmanager/shader/vertex.txt";
-    const char* pszFragShader = "/home/dve/work/code/pc/opengl/viewmanager/shader/fragment.txt";
-    xshader->loadSource(vertexShaderSource, pszFragShader);
+    
 
     float vertices[] = {
         -0.5f, -0.5f, 0.0f, // left  
@@ -101,6 +102,7 @@ void ViewManager::DrawTriangle()
 
 void ViewManager::DrawTexture()
 {
+
     unsigned char* m_pbyData = new unsigned char[IMG_WIDTH*IMG_HEIGHT*2];
     (void)memset(m_pbyData, 0, IMG_WIDTH * IMG_HEIGHT * 2);
 
@@ -126,27 +128,14 @@ void ViewManager::DrawTexture()
     cv::Mat imageUYVY(IMG_HEIGHT,IMG_WIDTH, CV_8UC2, m_pbyData);
     cv::Mat image(IMG_HEIGHT,IMG_WIDTH, CV_8UC3, m_pdwCamDataBGR);
     cvtColor(imageUYVY, image, cv::COLOR_YUV2RGB_UYVY);
-    // unsigned char* pRGBData  = new unsigned char[IMG_WIDTH * IMG_HEIGHT * 2];
-    // ConvertUYVYToRGB565(m_pbyData, IMG_WIDTH, IMG_HEIGHT, pRGBData);
-    // unsigned char* m_pdwCamData  = new unsigned char[IMG_WIDTH * IMG_HEIGHT * 3];
-    // ConvertUYVYToRGB888(m_pbyData, IMG_WIDTH, IMG_HEIGHT, m_pdwCamData);
 
-    // cv::Mat tmpMat;
-    // cv::Mat tmpBlendMat;
-    // tmpMat = cv::Mat(IMG_HEIGHT, IMG_WIDTH, CV_8UC3, m_pdwCamData);
-    // tmpBlendMat = tmpMat(cv::Range(tmpMat.rows / 2, tmpMat.rows), cv::Range(0, tmpMat.cols));
-
-    // std::vector<cv::Mat> Channels0;
-    // cv::cvtColor(tmpMat, tmpMat, CV_RGB2YUV);
-    // cv::split(tmpBlendMat, Channels0);
-    // const AVM_Double r0 = cv::mean(Channels0[0])[0];
-    // cv::cvtColor(tmpMat, tmpMat, CV_YUV2RGB);
-    // ConvertRGB888ToRGB565(m_pdwCamData, IMG_WIDTH, IMG_HEIGHT, pRGBData);
-
-    // GLuint texID;
-    // glGenTextures(1, &texID);
-    // glBindTexture(GL_TEXTURE_2D, texID);
-    // glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, IMG_WIDTH, IMG_HEIGHT, 0, GL_RGB, GL_UNSIGNED_SHORT_5_6_5, pRGBData);
-    // glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    // glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    GLuint mTexID;
+    glGenTextures(1, &mTexID);
+    glBindTexture(GL_TEXTURE_2D, mTexID);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, IMG_WIDTH, IMG_HEIGHT, 0, GL_RGB, GL_UNSIGNED_BYTE, m_pdwCamDataBGR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glBindTexture(GL_TEXTURE_2D, 0);
 }

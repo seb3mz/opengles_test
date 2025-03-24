@@ -51,7 +51,7 @@ add_subdirectory(${PROJROOT}/xwindow)
 
 # 设置编译选项
 set(LOCAL_CXXFLAGS -std=c++11)
-set(CMAKE_EXE_LINKER_FLAGS "-fuse-ld=gold")
+set(CMAKE_EXE_LINKER_FLAGS ) #"-fuse-ld=gold"
 
 # cmake 添加编译选项
 add_compile_options(${LOCAL_CXXFLAGS})
