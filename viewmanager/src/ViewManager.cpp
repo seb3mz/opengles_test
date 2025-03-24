@@ -48,15 +48,15 @@ void ViewManager::PreRender()
     glViewport(0, 0, IMG_WIDTH, IMG_HEIGHT);
     //加载 shader 
     //xshader->loadSource(vertexShaderSource, pszFragShader);
-    const char* vertexShaderSource = "/home/dve/work/code/pc/opengles_test/viewmanager/shader/vertex.txt";
-    const char* pszFragShader = "/home/dve/work/code/pc/opengles_test/viewmanager/shader/fragment.txt";
+    const char* vertexShaderSource = "/home/dve/work/code/pc/opengles_test/viewmanager/shader/vertex_wide.txt";
+    const char* pszFragShader = "/home/dve/work/code/pc/opengles_test/viewmanager/shader/fragment_wide.txt";
     xshader->loadSource(vertexShaderSource, pszFragShader);
 }
 
 void ViewManager::Render()
 {
-    DrawTriangle();
-    //DrawTexture();
+    //DrawTriangle();
+    DrawTexture();
 }
 
 void ViewManager::DrawTriangle()
@@ -138,4 +138,67 @@ void ViewManager::DrawTexture()
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glBindTexture(GL_TEXTURE_2D, 0);
+
+    GLuint  m_verticesVBO;
+    glGenBuffers(1, &m_verticesVBO);
+    glBindBuffer(GL_ARRAY_BUFFER, m_verticesVBO);
+    glBufferData(GL_ARRAY_BUFFER, 0, 0, GL_DYNAMIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+    typedef struct  {
+        float x;
+        float y;
+        float u;
+        float v;
+        float r;
+        float g;
+        float b;
+    } PosUV;
+
+    const PosUV datalist[] = {
+        {-1.0, -1.0, 0, 0},
+        {-1.0, 1.0, 0, 1},
+        {1.0, -1.0, 1, 0},
+
+        {1.0, -1.0, 1, 0},
+        {-1.0, 1.0, 0, 1},
+        {1.0, 1.0, 1, 1},
+    };
+
+    GLuint locAttrPos = glGetAttribLocation(xshader->shaderProgram, "inPosition");
+    GLuint locAttrUV = glGetAttribLocation(xshader->shaderProgram, "inTexCoord");
+    GLuint locUniTxt = glGetUniformLocation(xshader->shaderProgram, "texture0");
+    glUniform1i(locUniTxt, 0);
+    #define BUFFER_OFFSET(i) ((char *)NULL + (i))
+
+    glBindBuffer(GL_ARRAY_BUFFER, m_verticesVBO);
+    GLsizei stride = sizeof(PosUV);
+    glVertexAttribPointer(locAttrPos, 2, GL_FLOAT, GL_FALSE, stride, 0);
+    glEnableVertexAttribArray(locAttrPos);
+
+    glVertexAttribPointer(locAttrUV, 2, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(2 * sizeof(GLfloat)));
+    glEnableVertexAttribArray(locAttrUV);
+
+    glBufferData(GL_ARRAY_BUFFER, sizeof(datalist), datalist, GL_DYNAMIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+    //fix bug: Forces the default active texture to be activated on Qnx
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, mTexID);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_BORDER);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_BORDER);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
+    float borderColor[] = {0.0f,0.0f,0.0f,1.0f};
+    glTexParameterfv(GL_TEXTURE_2D,GL_TEXTURE_BORDER_COLOR,borderColor);
+
+    xshader->use();
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+    surface->SwapBuffers();
+    getchar();
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+    glUseProgram(0);
 }
