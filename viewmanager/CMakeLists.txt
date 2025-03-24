@@ -10,7 +10,8 @@ set(INC_LIST ${PROJROOT}/viewmanager/inc
              ${PROJROOT}/imgtrans/inc
              ${PROJROOT}/thirdsdk/opencv-4.3.0/include)
 # 设置源文件路径
-set(SRC_LIST ${PROJROOT}/viewmanager/src/ViewManager.cpp)
+set(SRC_LIST ${PROJROOT}/viewmanager/src/ViewManager.cpp
+             ${PROJROOT}/viewmanager/src/Triangle.cpp)
 # 设置库文件路径
 set(LIB_LIST "${PROJROOT}/thirdsdk/opencv-4.3.0/lib/libopencv_core.so"
              "${PROJROOT}/build/lib/Debug/libshader.so")
