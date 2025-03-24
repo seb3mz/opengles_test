@@ -66,6 +66,7 @@ EglSurface::~EglSurface()
         cout << "eglCreateWindowSurface failed" << endl;
         return false;
     }
+    return false;
  }
 
  void EglSurface::DestroySurface()
@@ -117,6 +118,7 @@ EglSurface::~EglSurface()
         cout << "eglCreateContext failed" << endl;;
         return false;
     }
+    return true;
  }
 
  bool EglSurface::StartMakeCurrent()

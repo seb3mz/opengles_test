@@ -4,12 +4,8 @@ cmake_minimum_required(VERSION 3.5)
 set(PROJ_NAME eglsurface)
 project(${PROJ_NAME})
 
-# 设置头文件路径
-set(INC_LIST ${PROJROOT}/eglsurface/inc)
 # 设置源文件路径
 set(SRC_LIST ${PROJROOT}/eglsurface/src/EglSurface.cpp)
-# 设置库文件路径
-set(LIB_LIST "./lib")
 
 # 设置编译选项
 set(LOCAL_CXXFLAGS -fPIC -g)
@@ -17,8 +13,7 @@ set(LOCAL_CXXFLAGS -fPIC -g)
 # 设置编译
 set(LIBTYPE SHARED) # STATIC SHARED
 
-include_directories(${INC_LIST})
 add_compile_options(${LOCAL_CXXFLAGS})
 
 add_library(${PROJ_NAME} ${LIBTYPE} ${SRC_LIST})
-target_link_libraries(${PROJ_NAME} PUBLIC -lEGL -lGLESv2)
+target_link_libraries(${PROJ_NAME} -lEGL)

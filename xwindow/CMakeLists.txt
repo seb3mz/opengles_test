@@ -4,8 +4,6 @@ cmake_minimum_required(VERSION 3.5)
 set(PROJ_NAME xwindow)
 project(${PROJ_NAME})
 
-# 设置头文件路径
-set(INC_LIST ${PROJROOT}/xwindow/inc)
 # 设置源文件路径
 set(SRC_LIST ${PROJROOT}/xwindow/src/Xwindow.cpp)
 
@@ -15,8 +13,5 @@ set(LOCAL_CXXFLAGS -fPIC -g)
 # 设置编译
 set(LIBTYPE SHARED) # STATIC SHARED
 
-include_directories(${INC_LIST})
-add_compile_options(${LOCAL_CXXFLAGS})
-
 add_library(${PROJ_NAME} ${LIBTYPE} ${SRC_LIST})
-target_link_libraries(${PROJ_NAME} PUBLIC -lX11)
+target_link_libraries(${PROJ_NAME} -lX11)

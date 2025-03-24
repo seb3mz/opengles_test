@@ -24,8 +24,8 @@ set(INC_LIST "${PROJROOT}/eglsurface/inc"
              "${PROJROOT}/viewmanager/inc"
              "${PROJROOT}/shader/inc"
              "${PROJROOT}/imgtrans/inc"
-             "${PROJROOT}/thirdsdk/opencv-4.3.0/include"
-             "${PROJROOT}/xwindow/inc")
+             "${PROJROOT}/xwindow/inc"
+             "${PROJROOT}/thirdsdk/opencv-4.3.0/include")
 # 设置源文件路径
 set(SRC_LIST "./main.cpp")
 # 设置库文件路径
@@ -52,6 +52,10 @@ add_subdirectory(${PROJROOT}/xwindow)
 # 设置编译选项
 set(LOCAL_CXXFLAGS -std=c++11)
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fuse-ld=gold") #"-fuse-ld=gold"
+# 设置动态库编译选项，使用gold链接器
+set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -fuse-ld=gold")
+# 静态库 编译选项，使用gold链接器
+set(CMAKE_STATIC_LINKER_FLAGS "${CMAKE_STATIC_LINKER_FLAGS} -fuse-ld=gold")
 
 # cmake 添加编译选项
 add_compile_options(${LOCAL_CXXFLAGS})
@@ -66,4 +70,4 @@ add_dependencies(${PROJ_NAME} imgtrans)
 add_dependencies(${PROJ_NAME} xwindow)
 
 # cmake 向可执行文件添加链接库
-target_link_libraries(${PROJ_NAME} -leglsurface -lviewmanager -lxwindow)
+target_link_libraries(${PROJ_NAME} -lviewmanager -leglsurface -lshader -lxwindow -lEGL  -lopencv_core -lopencv_calib3d -lopencv_features2d -lopencv_imgproc -lopencv_videoio -lopencv_highgui  -lGLESv2 -lX11)
