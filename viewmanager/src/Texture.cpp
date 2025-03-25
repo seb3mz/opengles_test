@@ -80,13 +80,13 @@ void Texture::Draw()
     } PosUV;
 
     const PosUV datalist[] = {
-        {-1.0, -1.0, 0, 0},
-        {-1.0, 1.0, 0, 1},
-        {1.0, -1.0, 1, 0},
+        {-1.0, -1.0, 0, 1},
+        {-1.0, 1.0, 0, 0},
+        {1.0, -1.0, 1, 1},
 
-        {1.0, -1.0, 1, 0},
-        {-1.0, 1.0, 0, 1},
-        {1.0, 1.0, 1, 1},
+        {1.0, -1.0, 1, 1},
+        {-1.0, 1.0, 0, 0},
+        {1.0, 1.0, 1, 0},
     };
 
     GLuint locAttrPos = glGetAttribLocation(xshader->shaderProgram, "inPosition");
