@@ -2,6 +2,9 @@
 #include <string.h>
 #include "opencv2/imgproc/types_c.h"
 #include <GLES3/gl32.h>
+#include "glm.hpp"
+#include "gtc/matrix_transform.hpp"
+#include "gtc/type_ptr.hpp"
 #include "imgtrans.h"
 
 #define IMG_WIDTH 1152
@@ -88,7 +91,50 @@ void Texture::Draw()
         {-1.0, 1.0, 0, 0},
         {1.0, 1.0, 1, 0},
     };
+    double PI = 3.1415926;
+    double rotanglex = 0 * PI / 180.0f;
+    double rotangley = 0 * PI / 180.0f;
+    double rotanglez = 0 * PI / 180.0f;
+    cv::Matx44f camRotMatX(1.0F, 0.0F, 0.0F, 0.0F,
+			                0.0F, (float)cos(rotanglex), (float)(-sin(rotanglex)), 0.0F,
+			                0.0F, (float)sin(rotanglex), (float)cos(rotanglex), 0.0F,
+                            0.0F, 0.0F, 0.0F, 1.0F);
+    cv::Matx44f camRotMatY((float)cos(rotangley), 0.0F, (float)sin(rotangley), 0.0F,
+			                0.0F, 1.0F, 0.0F, 0.0F,
+			                (float)(-sin(rotangley)), 0.0F, (float)cos(rotangley), 0.0F,
+                            0.0F, 0.0F, 0.0F, 1.0F);
+    cv::Matx44f camRotMatZ((float)cos(rotanglez), (float)(-sin(rotanglez)), 0.0F, 0.0F,
+                           (float)sin(rotanglez), (float)cos(rotanglez), 0.0F, 0.0F,
+                           0.0F, 0.0F, 1.0F, 0.0F,
+                           0.0F, 0.0F, 0.0F, 1.0F);
+    cv::Matx44f transMat(
+                            1.0f, 0.0f, 0.0f, 0.5f,
+                            0.0f, 1.0f, 0.0f, 0.5f,
+                            0.0f, 0.0f, 1.0f, 0.5f,
+                            0.0f, 0.0f, 0.0f, 1.0f
+                        );
 
+    //cv::Vec3f tran(0.0f, 0.0f, 0.0f);
+    cv::Matx44f model = camRotMatZ * camRotMatY * camRotMatX * transMat;
+    cv::Matx44f view = cv::Matx44f::eye();
+    cv::Matx44f mvp = view * model;
+    cv::Matx44f mt = mvp.t();
+
+    glm::mat4 model_glm = glm::mat4(1.0f);
+    model_glm = glm::translate(model_glm, glm::vec3(0.0f, 0.0f, 0.0f));
+    //model_glm = glm::rotate(model_glm, glm::radians(0.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+    model_glm = glm::scale(model_glm, glm::vec3(2.0f, 2.0f, 2.0f));
+
+    //cv::Affine3f VCamAff = cv::Affine3f(camRotMatZ * camRotMatY * camRotMatX, tran);
+    //cv::Affine3f VCamAff = cv::Affine3f::Identity().rotate(cv::Vec3f(0.0f, 0.0f, 0.0f)).translate(cv::Vec3f(0.3f, 0.0f, 0.0f));
+    //cv::Affine3f VCamAff = cv::Affine3f::Identity().scale(cv::Vec3f(2.0f, 1.0f, 1.0f));
+    glUseProgram(xshader->shaderProgram);
+    //如果不加glUseProgram这句，渲染出来的图像是黑色的，错误码是1282
+    GLint mvp_v = glGetUniformLocation(xshader->shaderProgram, "uMVPMat");
+    cout << glGetError() << endl;
+    //glUniformMatrix4fv(mvp_v, 1, GL_FALSE, mt.val);
+    glUniformMatrix4fv(mvp_v, 1, GL_FALSE, glm::value_ptr(model_glm));
+    cout << glGetError() << endl;
     GLuint locAttrPos = glGetAttribLocation(xshader->shaderProgram, "inPosition");
     GLuint locAttrUV = glGetAttribLocation(xshader->shaderProgram, "inTexCoord");
     GLuint locUniTxt = glGetUniformLocation(xshader->shaderProgram, "texture0");

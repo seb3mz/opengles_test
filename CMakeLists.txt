@@ -25,12 +25,16 @@ set(INC_LIST "${PROJROOT}/eglsurface/inc"
              "${PROJROOT}/shader/inc"
              "${PROJROOT}/imgtrans/inc"
              "${PROJROOT}/xwindow/inc"
-             "${PROJROOT}/thirdsdk/opencv-4.3.0/include")
+             "${PROJROOT}/configdata/inc"
+             "${PROJROOT}/thirdsdk/opencv-4.3.0/include"
+             "${PROJROOT}/thirdsdk/TinyXML/include"
+             "${PROJROOT}/thirdsdk/glm")
 # 设置源文件路径
 set(SRC_LIST "./main.cpp")
 # 设置库文件路径
 set(LIB_LIST "${PROJROOT}/build/lib/Debug"
-             "${PROJROOT}/thirdsdk/opencv-4.3.0/lib")
+             "${PROJROOT}/thirdsdk/opencv-4.3.0/lib"
+             )
 
 # cmake 添加头文件路径
 include_directories(${INC_LIST})
@@ -48,6 +52,8 @@ add_subdirectory(${PROJROOT}/shader)
 add_subdirectory(${PROJROOT}/viewmanager)
 add_subdirectory(${PROJROOT}/imgtrans)
 add_subdirectory(${PROJROOT}/xwindow)
+add_subdirectory(${PROJROOT}/thirdsdk/TinyXML)
+add_subdirectory(${PROJROOT}/configdata)
 
 # 设置编译选项
 set(LOCAL_CXXFLAGS -std=c++11)
@@ -68,6 +74,8 @@ add_dependencies(${PROJ_NAME} shader)
 add_dependencies(${PROJ_NAME} viewmanager)
 add_dependencies(${PROJ_NAME} imgtrans)
 add_dependencies(${PROJ_NAME} xwindow)
+add_dependencies(${PROJ_NAME} tinyxml)
+add_dependencies(${PROJ_NAME} configdata)
 
 # cmake 向可执行文件添加链接库
-target_link_libraries(${PROJ_NAME} -lviewmanager -leglsurface -lshader -lxwindow -lEGL  -lopencv_core -lopencv_calib3d -lopencv_features2d -lopencv_imgproc -lopencv_videoio -lopencv_highgui  -lGLESv2 -lX11)
+target_link_libraries(${PROJ_NAME} -lviewmanager -leglsurface -lshader -lxwindow -ltinyxml -lconfigdata -lEGL  -lopencv_core -lopencv_calib3d -lopencv_features2d -lopencv_imgproc -lopencv_videoio -lopencv_highgui  -lGLESv2 -lX11)

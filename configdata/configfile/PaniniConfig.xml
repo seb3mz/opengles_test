@@ -1,0 +1,20 @@
+<PaniniConfig>
+        <RearConfig>
+            <Width>1222</Width>
+            <Height>480</Height>
+            <D>0.23</D>
+            <Top>0.1</Top>
+            <Bottom>0.08</Bottom>
+            <Azimuth>68.7</Azimuth>
+            <Theta>71</Theta>
+            <RotDegX>83</RotDegX>
+            <RotDegY>0</RotDegY>
+            <RotDegZ>0</RotDegZ>
+            <TransY>0</TransY>
+            <TransZ>3500</TransZ>
+            <MirrorInputImg>0</MirrorInputImg>
+            <MirrorPoint>1</MirrorPoint>
+            <OffsetX>0</OffsetX>
+            <OffsetY>-60</OffsetY>
+        </RearConfig>
+</PaniniConfig> 
